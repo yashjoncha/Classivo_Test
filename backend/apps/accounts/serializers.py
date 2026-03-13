@@ -21,6 +21,25 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 
+class SignupSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password', 'role']
+        read_only_fields = ['id', 'role']
+
+    def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError("Email is required.")
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
