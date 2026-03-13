@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import Link from 'next/link';
 import { apiClient } from '@/lib/api';
 
 interface LoginResponse {
@@ -23,7 +24,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data = await apiClient<LoginResponse>('/accounts/login/', {
+      const data = await apiClient<LoginResponse>('/auth/login/', {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       });
@@ -144,12 +145,12 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           Don&apos;t have an account?{' '}
-          <a
-            href="#"
+          <Link
+            href="/signup"
             className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
           >
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </main>
