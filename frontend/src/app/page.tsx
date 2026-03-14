@@ -40,8 +40,7 @@ export default function LoginPage() {
         })
       );
 
-      // TODO: redirect to dashboard after login
-      alert(`Welcome, ${data.username}!`);
+      window.location.href = '/dashboard';
     } catch {
       setError('Invalid username or password');
     } finally {

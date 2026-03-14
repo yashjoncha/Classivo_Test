@@ -20,7 +20,13 @@ export async function apiClient<T>(
   });
 
   if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
+    const text = await res.text().catch(() => '');
+    throw new Error(text || `API error: ${res.status} ${res.statusText}`);
+  }
+
+  // Handle 204 No Content (e.g. DELETE responses)
+  if (res.status === 204) {
+    return undefined as T;
   }
 
   return res.json();

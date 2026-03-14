@@ -23,6 +23,7 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('student');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +41,7 @@ export default function SignupPage() {
     try {
       const data = await apiClient<SignupResponse>('/auth/signup/', {
         method: 'POST',
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, role }),
       });
 
       localStorage.setItem('access_token', data.access);
@@ -54,7 +55,7 @@ export default function SignupPage() {
         })
       );
 
-      window.location.href = '/';
+      window.location.href = '/dashboard';
     } catch (err) {
       try {
         const text = (err as Error).message;
@@ -66,7 +67,7 @@ export default function SignupPage() {
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ username, email, password }),
+              body: JSON.stringify({ username, email, password, role }),
             }
           );
           const body: ApiError = await res.json();
@@ -150,6 +151,24 @@ export default function SignupPage() {
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
               )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5"
+              >
+                I am a
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              >
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+              </select>
             </div>
 
             <div>

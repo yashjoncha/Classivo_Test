@@ -4,8 +4,10 @@ from django.db import models
 class Chapter(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    content = models.JSONField(default=list, blank=True)
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['order']
