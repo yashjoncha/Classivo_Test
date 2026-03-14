@@ -172,7 +172,7 @@ function Toolbar() {
       <div className="w-px h-6 bg-slate-200 dark:bg-slate-600 mx-1" />
 
       {/* Question block - inserts at cursor position */}
-      <button type="button" onClick={insertQuestionBlock} className="px-3 py-1.5 text-sm rounded bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 font-medium transition cursor-pointer">+ Insert Question</button>
+      <button type="button" onClick={insertQuestionBlock} className="px-3 py-1.5 text-sm rounded bg-brand-50 dark:bg-brand-900/30 text-brand-500 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/50 font-medium transition cursor-pointer">+ Insert Question</button>
     </div>
   );
 }
@@ -207,9 +207,9 @@ function QuestionBlockElement({ attributes, children, element }: any) {
       {/* Slate requires children even for void nodes */}
       <div className="hidden">{children}</div>
 
-      <div className="border-l-4 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20 rounded-r-lg p-4 my-4">
+      <div className="border-l-4 border-brand-500 bg-brand-50/50 dark:bg-brand-900/20 rounded-r-lg p-4 my-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+          <span className="text-sm font-semibold text-brand-500 dark:text-brand-400">
             Question Block
           </span>
           <button
@@ -227,7 +227,7 @@ function QuestionBlockElement({ attributes, children, element }: any) {
           value={node.question || ''}
           onChange={(e) => updateField({ question: e.target.value })}
           placeholder="Enter your question..."
-          className="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-3"
+          className="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 mb-3"
         />
 
         <div className="space-y-2">
@@ -238,7 +238,7 @@ function QuestionBlockElement({ attributes, children, element }: any) {
                 name={`correct-${stableId}`}
                 checked={node.correctAnswerIndex === idx}
                 onChange={() => updateField({ correctAnswerIndex: idx })}
-                className="text-indigo-600 cursor-pointer"
+                className="text-brand-500 cursor-pointer"
               />
               <span className="text-xs text-slate-500 dark:text-slate-400 w-4">
                 {String.fromCharCode(65 + idx)}.
@@ -252,7 +252,7 @@ function QuestionBlockElement({ attributes, children, element }: any) {
                   updateField({ options: newOptions });
                 }}
                 placeholder={`Option ${String.fromCharCode(65 + idx)}`}
-                className="flex-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-2.5 py-1.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="flex-1 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-2.5 py-1.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-brand-500"
               />
             </div>
           ))}
@@ -350,7 +350,7 @@ export default function ChapterEditor({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Chapter title..."
-        className="w-full text-3xl font-bold border-0 border-b-2 border-slate-200 dark:border-slate-700 bg-transparent px-0 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 transition mb-6"
+        className="w-full text-3xl font-bold border-0 border-b-2 border-slate-200 dark:border-slate-700 bg-transparent px-0 py-3 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-500 transition mb-6"
       />
 
       {/* Plate Editor */}
@@ -371,7 +371,7 @@ export default function ChapterEditor({
           type="button"
           onClick={handleSave}
           disabled={loading || !title.trim()}
-          className="rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-lg bg-brand-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Saving...' : 'Save Chapter'}
         </button>

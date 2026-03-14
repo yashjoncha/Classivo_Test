@@ -12,6 +12,12 @@ class Chapter(models.Model):
     class Meta:
         ordering = ['order']
 
+    def save(self, *args, **kwargs):
+        if self._state.adding and self.order == 0:
+            max_order = Chapter.objects.aggregate(models.Max('order'))['order__max']
+            self.order = (max_order or 0) + 1
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 

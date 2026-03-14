@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Classivo",
+  title: "Classavo",
   description: "Full-stack rich text editing platform",
 };
 

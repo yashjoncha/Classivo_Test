@@ -56,7 +56,7 @@ export default function QuestionCard({ questionId, question, options, correctAns
   };
 
   return (
-    <div className="border-l-4 border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/20 rounded-r-lg p-5 my-4">
+    <div className="border-l-4 border-brand-500 bg-brand-50/50 dark:bg-brand-900/20 rounded-r-lg p-5 my-4">
       <p className="text-base font-semibold text-slate-900 dark:text-white mb-3">{question}</p>
 
       <div className="space-y-2">
@@ -69,7 +69,7 @@ export default function QuestionCard({ questionId, question, options, correctAns
               optionClass = 'border-red-400 bg-red-50 dark:bg-red-900/30';
             }
           } else if (idx === selectedIndex) {
-            optionClass = 'border-indigo-400 bg-indigo-50 dark:bg-indigo-900/30';
+            optionClass = 'border-brand-400 bg-brand-50 dark:bg-brand-900/30';
           }
 
           return (
@@ -83,7 +83,7 @@ export default function QuestionCard({ questionId, question, options, correctAns
                 checked={selectedIndex === idx}
                 onChange={() => { if (!checked) setSelectedIndex(idx); }}
                 disabled={checked}
-                className="text-indigo-600"
+                className="text-brand-500"
               />
               <span className="text-sm font-medium text-slate-500 dark:text-slate-400 w-5">
                 {String.fromCharCode(65 + idx)}.
@@ -106,7 +106,7 @@ export default function QuestionCard({ questionId, question, options, correctAns
             type="button"
             onClick={handleCheck}
             disabled={selectedIndex === null || submitting}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-600 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? 'Submitting...' : 'Check Answer'}
           </button>

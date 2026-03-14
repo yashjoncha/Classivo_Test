@@ -83,7 +83,7 @@ export default function ResponsesPage({ params }: { params: Promise<{ id: string
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-          <Link href="/dashboard" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          <Link href="/dashboard" className="text-brand-500 dark:text-brand-400 hover:underline">
             Back to Dashboard
           </Link>
         </div>
@@ -98,8 +98,8 @@ export default function ResponsesPage({ params }: { params: Promise<{ id: string
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="text-xl font-bold text-slate-900 dark:text-white tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-                Classivo
+              <Link href="/dashboard" className="text-xl font-bold text-brand-500 dark:text-brand-400 tracking-tight hover:text-brand-600 dark:hover:text-brand-400 transition">
+                Classavo
               </Link>
               <span className="text-slate-300 dark:text-slate-600">/</span>
               <span className="text-sm text-slate-500 dark:text-slate-400 truncate max-w-xs">
@@ -160,7 +160,7 @@ export default function ResponsesPage({ params }: { params: Promise<{ id: string
                       onClick={() => setSelectedStudent(isSelected ? null : student.username)}
                       className={`w-full text-left rounded-xl p-4 transition cursor-pointer ${
                         isSelected
-                          ? 'bg-indigo-50 dark:bg-indigo-900/30 ring-2 ring-indigo-500'
+                          ? 'bg-brand-50 dark:bg-brand-900/30 ring-2 ring-brand-500'
                           : 'bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 hover:shadow-md'
                       }`}
                     >

@@ -35,7 +35,6 @@ export default function NewChapterPage() {
             .join(' ')
             .substring(0, 200) || 'Chapter content',
           content,
-          order: 1,
         }),
       });
 
@@ -81,8 +80,8 @@ export default function NewChapterPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="text-xl font-bold text-slate-900 dark:text-white tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-                Classivo
+              <Link href="/dashboard" className="text-xl font-bold text-brand-500 dark:text-brand-400 tracking-tight hover:text-brand-600 dark:hover:text-brand-400 transition">
+                Classavo
               </Link>
               <span className="text-slate-300 dark:text-slate-600">/</span>
               <span className="text-sm text-slate-500 dark:text-slate-400">New Chapter</span>

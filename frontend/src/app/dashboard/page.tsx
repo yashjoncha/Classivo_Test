@@ -39,11 +39,11 @@ export default function DashboardPage() {
       <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Classivo</h1>
+            <h1 className="text-xl font-bold text-brand-500 dark:text-brand-400 tracking-tight">Classavo</h1>
             <div className="flex items-center gap-4">
               <div className="text-sm text-slate-600 dark:text-slate-300">
                 <span className="font-medium">{user.username}</span>
-                <span className="ml-2 inline-flex items-center rounded-full bg-indigo-50 dark:bg-indigo-900/30 px-2.5 py-0.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 capitalize">
+                <span className="ml-2 inline-flex items-center rounded-full bg-brand-50 dark:bg-brand-900/30 px-2.5 py-0.5 text-xs font-medium text-brand-500 dark:text-brand-400 capitalize">
                   {user.role}
                 </span>
               </div>
@@ -65,7 +65,7 @@ export default function DashboardPage() {
           {user.role === 'instructor' && (
             <Link
               href="/dashboard/chapters/new"
-              className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition"
+              className="rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-600 transition"
             >
               + Create New Chapter
             </Link>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
                     <>
                       <Link
                         href={`/dashboard/chapters/${chapter.id}/edit`}
-                        className="rounded-lg bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition"
+                        className="rounded-lg bg-brand-50 dark:bg-brand-900/30 px-3 py-1.5 text-sm font-medium text-brand-500 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/50 transition"
                       >
                         Edit
                       </Link>

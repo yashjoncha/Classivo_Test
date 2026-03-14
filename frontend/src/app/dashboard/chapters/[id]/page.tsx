@@ -40,7 +40,7 @@ export default function ReadChapterPage({ params }: { params: Promise<{ id: stri
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
         <div className="text-center">
           <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Chapter not found.'}</p>
-          <Link href="/dashboard" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          <Link href="/dashboard" className="text-brand-500 dark:text-brand-400 hover:underline">
             Back to Dashboard
           </Link>
         </div>
@@ -55,8 +55,8 @@ export default function ReadChapterPage({ params }: { params: Promise<{ id: stri
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="text-xl font-bold text-slate-900 dark:text-white tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-                Classivo
+              <Link href="/dashboard" className="text-xl font-bold text-brand-500 dark:text-brand-400 tracking-tight hover:text-brand-600 dark:hover:text-brand-400 transition">
+                Classavo
               </Link>
               <span className="text-slate-300 dark:text-slate-600">/</span>
               <span className="text-sm text-slate-500 dark:text-slate-400 truncate max-w-xs">{chapter.title}</span>
@@ -65,7 +65,7 @@ export default function ReadChapterPage({ params }: { params: Promise<{ id: stri
               {user?.role === 'instructor' && (
                 <Link
                   href={`/dashboard/chapters/${id}/edit`}
-                  className="rounded-lg bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition"
+                  className="rounded-lg bg-brand-50 dark:bg-brand-900/30 px-3 py-1.5 text-sm font-medium text-brand-500 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/50 transition"
                 >
                   Edit
                 </Link>
