@@ -2,12 +2,13 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = os.environ.get(
-    'DJANGO_SECRET_KEY',
-    'django-insecure-8@%$$vyi=co(wri@lv+u^v%l)*2_5+!77&p&6v+hso#a(fa3uk',
-)
+load_dotenv(BASE_DIR / '.env')
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
