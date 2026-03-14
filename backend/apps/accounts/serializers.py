@@ -27,7 +27,7 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'role']
-        read_only_fields = ['id', 'role']
+        read_only_fields = ['id']
 
     def validate_email(self, value):
         if not value:
