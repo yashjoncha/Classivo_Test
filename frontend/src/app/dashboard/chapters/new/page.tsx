@@ -1,41 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import ChapterEditor from '@/components/editor/ChapterEditor';
-import type { ContentBlock, Chapter, User } from '@/lib/types';
+import type { ContentBlock, Chapter } from '@/lib/types';
 
 export default function NewChapterPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token } = useAuth({ requiredRole: 'instructor' });
+  const router = useRouter();
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userStr = localStorage.getItem('user');
-
-    if (!token || !userStr) {
-      window.location.href = '/';
-      return;
-    }
-
-    try {
-      const parsed = JSON.parse(userStr) as User;
-      if (parsed.role !== 'instructor') {
-        window.location.href = '/dashboard';
-        return;
-      }
-      setUser(parsed);
-    } catch {
-      window.location.href = '/';
-    }
-  }, []);
+  const [error, setError] = useState('');
 
   const handleSave = async (title: string, content: ContentBlock[]) => {
-    const token = localStorage.getItem('access_token');
     if (!token) return;
 
     setSaving(true);
+    setError('');
     try {
       // Separate text content and question blocks
       const textContent = content.filter((b) => b.type !== 'question-block');
@@ -75,9 +58,9 @@ export default function NewChapterPage() {
           })
       );
 
-      window.location.href = '/dashboard';
+      router.push('/dashboard');
     } catch (err) {
-      alert(`Failed to save chapter: ${(err as Error).message}`);
+      setError(`Failed to save chapter: ${(err as Error).message}`);
     } finally {
       setSaving(false);
     }
@@ -116,6 +99,11 @@ export default function NewChapterPage() {
 
       {/* Editor */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {error && (
+          <div className="rounded-lg bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm text-red-600 dark:text-red-400 mb-4">
+            {error}
+          </div>
+        )}
         <ChapterEditor onSave={handleSave} loading={saving} />
       </main>
     </div>

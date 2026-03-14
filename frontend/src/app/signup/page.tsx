@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiClient } from '@/lib/api';
+import { apiClient, ApiError } from '@/lib/api';
 
 interface SignupResponse {
   access: string;
@@ -12,13 +13,14 @@ interface SignupResponse {
   username: string;
 }
 
-interface ApiError {
+interface ApiFieldErrors {
   username?: string[];
   email?: string[];
   password?: string[];
 }
 
 export default function SignupPage() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,35 +57,20 @@ export default function SignupPage() {
         })
       );
 
-      window.location.href = '/dashboard';
+      router.push('/dashboard');
     } catch (err) {
-      try {
-        const text = (err as Error).message;
-        const match = text.match(/API error: (\d+)/);
-        if (match && match[1] === '400') {
-          // Re-fetch to get error body
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/auth/signup/`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ username, email, password, role }),
-            }
-          );
-          const body: ApiError = await res.json();
-          const fieldErrors: Record<string, string> = {};
-          if (body.username) fieldErrors.username = body.username[0];
-          if (body.email) fieldErrors.email = body.email[0];
-          if (body.password) fieldErrors.password = body.password[0];
-          setErrors(
-            Object.keys(fieldErrors).length > 0
-              ? fieldErrors
-              : { general: 'Signup failed. Please try again.' }
-          );
-        } else {
-          setErrors({ general: 'Something went wrong. Please try again.' });
-        }
-      } catch {
+      if (err instanceof ApiError && err.status === 400 && err.body) {
+        const body = err.body as ApiFieldErrors;
+        const fieldErrors: Record<string, string> = {};
+        if (body.username) fieldErrors.username = body.username[0];
+        if (body.email) fieldErrors.email = body.email[0];
+        if (body.password) fieldErrors.password = body.password[0];
+        setErrors(
+          Object.keys(fieldErrors).length > 0
+            ? fieldErrors
+            : { general: 'Signup failed. Please try again.' }
+        );
+      } else {
         setErrors({ general: 'Something went wrong. Please try again.' });
       }
     } finally {

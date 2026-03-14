@@ -1,41 +1,25 @@
 'use client';
 
 import { useState, useEffect, use } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import ChapterEditor from '@/components/editor/ChapterEditor';
-import type { ContentBlock, Chapter, User } from '@/lib/types';
+import type { ContentBlock, Chapter } from '@/lib/types';
 
 export default function EditChapterPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token, isReady } = useAuth({ requiredRole: 'instructor' });
+  const router = useRouter();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userStr = localStorage.getItem('user');
+    if (!isReady || !token) return;
 
-    if (!token || !userStr) {
-      window.location.href = '/';
-      return;
-    }
-
-    try {
-      const parsed = JSON.parse(userStr) as User;
-      if (parsed.role !== 'instructor') {
-        window.location.href = '/dashboard';
-        return;
-      }
-      setUser(parsed);
-    } catch {
-      window.location.href = '/';
-      return;
-    }
-
-    // Fetch chapter data (detail endpoint includes content + questions)
     apiClient<Chapter>(`/chapters/${id}/`, { token })
       .then((data) => {
         setChapter(data);
@@ -44,13 +28,13 @@ export default function EditChapterPage({ params }: { params: Promise<{ id: stri
         setError('Failed to load chapter.');
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, isReady, token]);
 
   const handleSave = async (title: string, content: ContentBlock[]) => {
-    const token = localStorage.getItem('access_token');
     if (!token) return;
 
     setSaving(true);
+    setError('');
     try {
       const textContent = content.filter((b) => b.type !== 'question-block');
       const questionBlocks = content.filter((b) => b.type === 'question-block');
@@ -96,9 +80,9 @@ export default function EditChapterPage({ params }: { params: Promise<{ id: stri
         });
       await Promise.all(newQuestions);
 
-      window.location.href = '/dashboard';
+      router.push('/dashboard');
     } catch (err) {
-      alert(`Failed to save chapter: ${(err as Error).message}`);
+      setError(`Failed to save chapter: ${(err as Error).message}`);
     } finally {
       setSaving(false);
     }
@@ -112,7 +96,7 @@ export default function EditChapterPage({ params }: { params: Promise<{ id: stri
     );
   }
 
-  if (error) {
+  if (error && !chapter) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
         <div className="text-center">
@@ -150,6 +134,11 @@ export default function EditChapterPage({ params }: { params: Promise<{ id: stri
 
       {/* Editor */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {error && (
+          <div className="rounded-lg bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm text-red-600 dark:text-red-400 mb-4">
+            {error}
+          </div>
+        )}
         <ChapterEditor
           initialTitle={chapter?.title}
           initialContent={chapter?.content}

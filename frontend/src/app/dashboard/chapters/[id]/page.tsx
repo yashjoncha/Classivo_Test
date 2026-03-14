@@ -3,33 +3,20 @@
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import ChapterReader from '@/components/reader/ChapterReader';
-import type { Chapter, User } from '@/lib/types';
+import type { Chapter } from '@/lib/types';
 
 export default function ReadChapterPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token, isReady } = useAuth();
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userStr = localStorage.getItem('user');
+    if (!isReady || !token) return;
 
-    if (!token || !userStr) {
-      window.location.href = '/';
-      return;
-    }
-
-    try {
-      setUser(JSON.parse(userStr));
-    } catch {
-      window.location.href = '/';
-      return;
-    }
-
-    // Detail endpoint returns chapter with nested questions
     apiClient<Chapter>(`/chapters/${id}/`, { token })
       .then((data) => {
         setChapter(data);
@@ -38,7 +25,7 @@ export default function ReadChapterPage({ params }: { params: Promise<{ id: stri
         setError('Failed to load chapter.');
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, isReady, token]);
 
   if (loading) {
     return (

@@ -4,6 +4,17 @@ interface FetchOptions extends RequestInit {
   token?: string;
 }
 
+export class ApiError extends Error {
+  status: number;
+  body: unknown;
+
+  constructor(status: number, statusText: string, body: unknown) {
+    super(`API error: ${status} ${statusText}`);
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export async function apiClient<T>(
   endpoint: string,
   options: FetchOptions = {}
@@ -20,8 +31,13 @@ export async function apiClient<T>(
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(text || `API error: ${res.status} ${res.statusText}`);
+    let body: unknown;
+    try {
+      body = await res.json();
+    } catch {
+      body = await res.text().catch(() => '');
+    }
+    throw new ApiError(res.status, res.statusText, body);
   }
 
   // Handle 204 No Content (e.g. DELETE responses)

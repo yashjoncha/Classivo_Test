@@ -1,7 +1,3 @@
-export interface HealthResponse {
-  status: string;
-}
-
 export interface User {
   id: number;
   username: string;
@@ -48,12 +44,4 @@ export interface ContentBlock {
   type: string;
   children: Array<{ text: string; bold?: boolean; italic?: boolean; underline?: boolean }>;
   [key: string]: unknown;
-}
-
-export interface AuthResponse {
-  access: string;
-  refresh: string;
-  user_id: number;
-  role: string;
-  username: string;
 }

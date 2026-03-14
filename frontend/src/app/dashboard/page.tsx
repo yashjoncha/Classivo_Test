@@ -3,29 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
-import type { Chapter, User } from '@/lib/types';
+import { useAuth } from '@/hooks/useAuth';
+import type { Chapter } from '@/lib/types';
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token, isReady, logout } = useAuth();
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userStr = localStorage.getItem('user');
-
-    if (!token || !userStr) {
-      window.location.href = '/';
-      return;
-    }
-
-    try {
-      setUser(JSON.parse(userStr));
-    } catch {
-      window.location.href = '/';
-      return;
-    }
+    if (!isReady || !token) return;
 
     apiClient<Chapter[]>('/chapters/', { token })
       .then((data) => {
@@ -35,14 +23,7 @@ export default function DashboardPage() {
         setError('Failed to load chapters.');
       })
       .finally(() => setLoading(false));
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
-    window.location.href = '/';
-  };
+  }, [isReady, token]);
 
   if (!user) {
     return (
@@ -67,7 +48,7 @@ export default function DashboardPage() {
                 </span>
               </div>
               <button
-                onClick={handleLogout}
+                onClick={logout}
                 className="rounded-lg border border-slate-300 dark:border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer"
               >
                 Logout

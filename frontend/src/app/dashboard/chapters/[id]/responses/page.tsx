@@ -3,7 +3,8 @@
 import { useState, useEffect, useMemo, use } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api';
-import type { User, Chapter, Answer } from '@/lib/types';
+import { useAuth } from '@/hooks/useAuth';
+import type { Chapter, Answer } from '@/lib/types';
 
 interface StudentSummary {
   username: string;
@@ -15,7 +16,7 @@ interface StudentSummary {
 
 export default function ResponsesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, token, isReady } = useAuth({ requiredRole: 'instructor' });
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,25 +24,7 @@ export default function ResponsesPage({ params }: { params: Promise<{ id: string
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userStr = localStorage.getItem('user');
-
-    if (!token || !userStr) {
-      window.location.href = '/';
-      return;
-    }
-
-    try {
-      const parsed = JSON.parse(userStr) as User;
-      if (parsed.role !== 'instructor') {
-        window.location.href = '/dashboard';
-        return;
-      }
-      setUser(parsed);
-    } catch {
-      window.location.href = '/';
-      return;
-    }
+    if (!isReady || !token) return;
 
     // Fetch chapter (with nested questions) and answers in parallel
     Promise.all([
@@ -56,7 +39,7 @@ export default function ResponsesPage({ params }: { params: Promise<{ id: string
         setError('Failed to load responses.');
       })
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, isReady, token]);
 
   const questions = chapter?.questions || [];
 
